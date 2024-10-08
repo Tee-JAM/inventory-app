@@ -1,27 +1,42 @@
+import React, { useState } from "react"
+import { UpdateForm } from "./UpdateForm"
 
-import React from "react";
+export const SingleItem = ({ item, deleteItem, goBack, itemRefresh, setItemRefresh }) => {
+	const currency = item.price.toFixed(2)
 
-export const SingleItem = ({ item, deleteItem, goBack }) => {
-   const currency = item.price.toFixed(2);
-  return (
-    <>
-    <div className="container">
+	const [editView, setEditView] = useState(false)
 
-      <div className="item-details">
-        
-        <img className="image-size" src={item.image} alt={item.name}></img>  
-        <h1>{item.name}</h1>
-        <h2>${currency}</h2>
-        <p>{item.category}</p>
-        <p>{item.description}</p>
-        
-      </div>
+	function editItem() {
+		setEditView(!editView)
+	}
 
-      <div className="allButtons">
-        <button className="backBtn" onClick={goBack}>Back</button>
-        <button className="deleteBtn" onClick={() => deleteItem(item.id)}>Delete</button>
-      </div>
-    </div>
-    </>
-  );
-};
+	return (
+		<>
+			{editView ? (
+				<UpdateForm item={item} itemRefresh={itemRefresh} setItemRefresh={setItemRefresh} editView={editView} setEditView={setEditView} goBack={goBack} />
+			) : (
+				<div className="container">
+					<div className="item-details">
+						<img className="image-size" src={item.image} alt={item.name}></img>
+						<h1>{item.name}</h1>
+						<h2>${currency}</h2>
+						<p>{item.category}</p>
+						<p>{item.description}</p>
+					</div>
+
+					<div className="allButtons">
+						<button className="backBtn" onClick={goBack}>
+							Back
+						</button>
+						<button className="editBtn" onClick={editItem}>
+							Edit
+						</button>
+						<button className="deleteBtn" onClick={() => deleteItem(item.id)}>
+							Delete
+						</button>
+					</div>
+				</div>
+			)}
+		</>
+	)
+}

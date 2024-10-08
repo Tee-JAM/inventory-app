@@ -8,13 +8,10 @@ import { Search } from "./Search";
 import apiURL from "../api";
 
 export const App = () => {
-  const [items, setItems] = useState([]);
-
-  const [singleItem, setSingleItem] = useState(null);
-
-  const [itemRefresh, setItemRefresh] = useState(false);
-
-  const [addView, setAddView] = useState(false);
+	const [items, setItems] = useState([])
+	const [singleItem, setSingleItem] = useState(null)
+	const [itemRefresh, setItemRefresh] = useState(false)
+	const [addView, setAddView] = useState(false)
 
   async function fetchItems() {
     try {
@@ -55,42 +52,38 @@ export const App = () => {
       const updatedItemsData = await updatedItemsResponse.json();
       setItems(updatedItemsData);
 
-      // Switch back to the list view after deletion
-    } catch (err) {
-      console.log("Error deleting item: ", err);
-    }
-  }
-  //go Back to Item list
-  function goBackToList() {
-    setSingleItem(null);
-  }
+			// Switch back to the list view after deletion
+			setSingleItem(null)
+		} catch (err) {
+			console.log("Error deleting item: ", err)
+		}
+	}
+	//go Back to Item list
+	function goBackToList() {
+		setSingleItem(null)
+	}
 
   function handleAddClick(e) {
     setAddView(!addView);
   }
 
-  return (
-    <main>
-      <Search />
-      <h1 className="header">
-        Tee-JAM Store <button onClick={handleAddClick}>Add Item</button>
-      </h1>
-      <h2 className="subheader">All items 🔥</h2>
-      {addView ? (
-        <ItemForm />
-      ) : (
-        <div className="item-display">
-          {singleItem ? (
-            <SingleItem
-              item={singleItem}
-              goBack={goBackToList}
-              deleteItem={deleteItem}
-            />
-          ) : (
-            <ItemList items={items} onItemClick={fetchItemById} />
-          )}
-        </div>
-      )}
-    </main>
-  );
-};
+	return (
+		<main>
+			<h1 className="header">
+				Tee-JAM Store <button onClick={handleAddClick}>Add Item</button>
+			</h1>
+			<h2 className="subheader">All items 🔥</h2>
+			{addView ? (
+				<ItemForm />
+			) : (
+				<div className="item-display">
+					{singleItem ? (
+						<SingleItem item={singleItem} goBack={goBackToList} deleteItem={deleteItem} itemRefresh={itemRefresh} setItemRefresh={setItemRefresh} />
+					) : (
+						<ItemList items={items} onItemClick={fetchItemById} />
+					)}
+				</div>
+			)}
+		</main>
+	)
+}
