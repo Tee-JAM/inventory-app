@@ -8,10 +8,11 @@ import { Search } from "./Search";
 import apiURL from "../api";
 
 export const App = () => {
-	const [items, setItems] = useState([])
-	const [singleItem, setSingleItem] = useState(null)
-	const [itemRefresh, setItemRefresh] = useState(false)
-	const [addView, setAddView] = useState(false)
+  const [items, setItems] = useState([]);
+  const [singleItem, setSingleItem] = useState(null);
+  const [itemRefresh, setItemRefresh] = useState(false);
+  const [addView, setAddView] = useState(false);
+  const [searchView, setSearchView] = useState(false);
 
   async function fetchItems() {
     try {
@@ -51,40 +52,70 @@ export const App = () => {
       const updatedItemsResponse = await fetch(`${apiURL}/items`);
       const updatedItemsData = await updatedItemsResponse.json();
       setItems(updatedItemsData);
+      setItemRefresh(!itemRefresh);
+      goBackToList();
 
-			// Switch back to the list view after deletion
-			setSingleItem(null)
-		} catch (err) {
-			console.log("Error deleting item: ", err)
-		}
-	}
-	//go Back to Item list
-	function goBackToList() {
-		setSingleItem(null)
-	}
+      // Switch back to the list view after deletion
+      setSingleItem(null);
+    } catch (err) {
+      console.log("Error deleting item: ", err);
+    }
+  }
+  //go Back to Item list
+  function goBackToList() {
+    setSingleItem(null);
+  }
 
   function handleAddClick(e) {
     setAddView(!addView);
   }
 
-	return (
-		<main>
-			<Search />
-			<h1 className="header">
-				Tee-JAM Store <button onClick={handleAddClick}>Add Item</button>
-			</h1>
-			<h2 className="subheader">All items 🔥</h2>
-			{addView ? (
-				<ItemForm />
-			) : (
-				<div className="item-display">
-					{singleItem ? (
-						<SingleItem item={singleItem} goBack={goBackToList} deleteItem={deleteItem} itemRefresh={itemRefresh} setItemRefresh={setItemRefresh} />
-					) : (
-						<ItemList items={items} onItemClick={fetchItemById} />
-					)}
-				</div>
-			)}
-		</main>
-	)
-}
+  function handleSearchClick() {
+	setSearchView(!searchView);
+  }
+
+  return (
+    <main>
+      <h1 className="header">Tee-JAM Store</h1>
+      <button onClick={handleAddClick}>{addView ? "Back" : "Add Item"}</button>
+	  <br></br>
+	  <button onClick ={handleSearchClick}>{searchView ? "Back" : "Search"}</button>
+
+      {searchView ? (
+        <Search searchView={searchView} setSearchView={setSearchView} />
+      ) : (
+        <>
+          {addView ? (
+            <></>
+          ) : singleItem ? (
+            <></>
+          ) : (
+            <h2 className="subheader">All items 🔥</h2>
+          )}
+          {addView ? (
+            <ItemForm
+              addView={addView}
+              setAddView={setAddView}
+              itemRefresh={itemRefresh}
+              setItemRefresh={setItemRefresh}
+            />
+          ) : (
+            <div className="item-display">
+              {singleItem ? (
+                <SingleItem
+                  item={singleItem}
+                  goBack={goBackToList}
+                  deleteItem={deleteItem}
+                  itemRefresh={itemRefresh}
+                  setItemRefresh={setItemRefresh}
+                />
+              ) : (
+                <ItemList items={items} onItemClick={fetchItemById} />
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </main>
+  );
+};

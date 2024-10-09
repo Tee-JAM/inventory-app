@@ -40,7 +40,7 @@ module.exports = {
 			image: "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
 		},
 		{
-			name: "Solid Gold Petite Micropave ",
+			name: "Solid Gold Petite Micropave",
 			price: 168,
 			description:
 				"Satisfaction Guaranteed. Return or exchange any order within 30 days.Designed and sold by Hafeez Center in the United States. Satisfaction Guaranteed. Return or exchange any order within 30 days.",

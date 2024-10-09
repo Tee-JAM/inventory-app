@@ -18,10 +18,10 @@ export const SingleItem = ({ item, deleteItem, goBack, itemRefresh, setItemRefre
 				<div className="container">
 					<div className="item-details">
 						<img className="image-size" src={item.image} alt={item.name}></img>
-						<h1>{item.name}</h1>
-						<h2>${currency}</h2>
-						<p>{item.category}</p>
-						<p>{item.description}</p>
+						<h1 className="detail-info">{item.name}</h1>
+						<h2 className="detail-info">${currency}</h2>
+						<p className="detail-info">{item.category}</p>
+						<p className="detail-info">{item.description}</p>
 					</div>
 
 					<div className="allButtons">
